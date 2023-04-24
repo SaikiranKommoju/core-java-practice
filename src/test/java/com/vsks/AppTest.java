@@ -1,4 +1,4 @@
-package org.example;
+package com.vsks;
 
 import static org.junit.Assert.assertTrue;
 
