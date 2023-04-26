@@ -3,12 +3,14 @@ package com.vsks.java8.stream;
 import java.util.*;
 import java.util.function.Function;
 import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class StreamExample1 {
 
     public static void main(String[] args) {
         int[] arr = {1, 34, 3, 98, 9, 76, 45, 4};
 
+        //Sort the integers naturally (Asc order)
         int[] sortedArray = Arrays.stream(arr)
                 .sorted()
                 .toArray();
@@ -92,5 +94,65 @@ public class StreamExample1 {
                 .filter(it -> s4.indexOf(it) == s4.lastIndexOf(it))
                 .findFirst().get();
         System.out.println("First non-repeated char = " + firstNonRepeatedChar);
+
+        //Group odd and even numbers from array
+        List<List<Integer>> oddEven = Arrays.stream(arr)
+                .sorted()
+                .boxed()
+                .collect(Collectors.groupingBy(it -> it % 2 == 0))
+                //.collect(Collectors.partitioningBy(it -> it % 2 == 0))
+                .values()
+                .stream()
+                .collect(Collectors.toList());
+        System.out.println("Odd & Even num list = " + oddEven);
+
+        //Group the numbers by range
+        int[] arr2 = {2, 34, 54, 23, 33, 20, 59, 11, 19, 37};
+        Map<Integer, List<Integer>> rangeNumbers = Arrays.stream(arr2)
+                .sorted()
+                .boxed()
+                .collect(Collectors.groupingBy(it -> ((it / 10) * 10), Collectors.toList()));
+        System.out.println("Range-Num = " + rangeNumbers);
+
+        //Form a list that should contain only integers
+        List<String> alphaNumericEleList = Arrays.asList("as", "123", "32", "2as");
+        List<Integer> numerics = alphaNumericEleList.stream()
+                .map(it -> it.chars().filter(Character::isDigit).mapToObj(it3 -> String.valueOf((char) it3)).collect(Collectors.joining()))
+                .filter(it4 -> null != it4 && !it4.isEmpty())
+                .map(Integer::valueOf)
+                .collect(Collectors.toList());
+        System.out.println("Numeric = " + numerics);
+
+        //Find the sum of unique elements in the array
+        int[] arr4 = {5, 6, 7, 8, 5, 5, 8, 8, 7};
+        int sum = Arrays.stream(arr4)
+                .distinct()
+                .sum();
+        System.out.println("Unique ele sum = " + sum);
+
+        Speech speech = new Speech();
+        List<String> words = speech.paragraphs.stream()
+                .flatMap(p -> p.sentences.stream())
+                .flatMap(s -> s.words.stream())
+                .collect(Collectors.toList());
+        System.out.println("Words in Speech = " + words);
+
+        List<String> sentences = Arrays.asList("My name is SaiKiran", "I'm a Software Developer in EPAM Systems - HYD", "My skills are Java 8, Spring Boot & Microservices");
+        List<String> wordList = sentences.stream()
+                .flatMap(s -> Stream.of(s.split("\\s+")))
+                .collect(Collectors.toList());
+        System.out.println("Words in Sentences = " + wordList);
     }
+}
+
+class Speech {
+    List<Paragraph> paragraphs;
+}
+
+class Paragraph {
+    List<Sentence> sentences;
+}
+
+class Sentence {
+    List<String> words;
 }

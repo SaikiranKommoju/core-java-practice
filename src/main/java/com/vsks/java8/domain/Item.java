@@ -2,15 +2,29 @@ package com.vsks.java8.domain;
 
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
+import java.util.Comparator;
 import java.util.Date;
 
-public class Item /*implements Comparator<Item>*/ {
+public class Item /*implements Comparable<Item>*/ {
 
     private Long id;
     private String name;
     private String category;
     private Date creationDate;
     private Long quantity;
+
+    private Double price;
+
+    private String seller;
+
+    public Item(Long id, String name, String category, Date creationDate, Long quantity, String seller) {
+        this.id = id;
+        this.name = name;
+        this.category = category;
+        this.creationDate = creationDate;
+        this.quantity = quantity;
+        this.seller = seller;
+    }
 
     public Item(Long id, String name, String category, Date creationDate, Long quantity) {
         this.id = id;
@@ -60,8 +74,25 @@ public class Item /*implements Comparator<Item>*/ {
         this.quantity = quantity;
     }
 
+    public String getSeller() {
+        return seller;
+    }
+
+    public void setSeller(String seller) {
+        this.seller = seller;
+    }
+
+    public Double getPrice() {
+        return price;
+    }
+
+    public void setPrice(Double price) {
+        this.price = price;
+    }
+
     /*@Override
-    public int compare(Item i1, Item i2) {
+    public int compareTo(Item i2) {
+        Item i1 = this;//incoming ele
         if (!i1.getName().equals(i2.getName())) {
             return i1.getName().compareTo(i2.getName());
         }
@@ -81,6 +112,6 @@ public class Item /*implements Comparator<Item>*/ {
 
     @Override
     public String toString() {
-        return "[" + id + ", " + name + ", " + category + ", " + formatDate(creationDate, "dd-MM-yyyy") + ", " + quantity + "]";
+        return "[" + id + ", " + name + ", " + category + ", " + formatDate(creationDate, "dd-MM-yyyy") + ", " + quantity + ", " + seller + ", " + price + "]";
     }
 }

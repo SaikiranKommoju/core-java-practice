@@ -16,6 +16,14 @@ public class SharedResource {
         }
     }
 
+    public void join() {
+        try {
+            Thread.currentThread().join();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     public synchronized void operate1(SharedResource sharedResource) {
         System.out.println("Started performing operation 1 on " + sharedResource + " ...");
         sleep(1000);
